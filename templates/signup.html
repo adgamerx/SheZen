@@ -7,29 +7,86 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css">
 </head>
 <body>
-    <div class="flex justify-center items-center h-screen">
-        <form class=" w-100 p-6 rounded-lg shadow-md">
-            <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="Name">Name</label>
-                <input class="border border-gray-400 p-2 w-full" type="text" name="name" id="user_name" required>
+<div class="flex justify-center items-center h-screen">
+    <form class="md:w-1/2 sm:w-5/6 p-6 rounded-lg shadow-md">
+        <div class="">
+            <div class="border-b border-gray-900/10 pb-4">
+                <h2 class="font-bold leading-7 text-gray-900">Sign Up</h2>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="Name">Email ID</label>
-                <input class="border border-gray-400 p-2 w-full" type="email" name="email" id="email" required>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <label for="name" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
+              <div class="mt-2">
+                <input type="text" name="name" id="name" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="password">Password</label>
-                <input class="border border-gray-400 p-2 w-full" type="password" name="password" id="password" required>
+    
+            <div class="sm:col-span-3">
+              <label for="age" class="block text-sm font-medium leading-6 text-gray-900">Age</label>
+              <div class="mt-2">
+                <input type="number" name="age" id="age" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              </div>
             </div>
-            <div class="mb-4">
-                <label class="block text-gray-700 font-bold mb-2" for="password">Confirm Password</label>
-                <input class="border border-gray-400 p-2 w-full" type="password" name="confirmpassword" id="confirmpassword" onkeyup="checkpass(this)" required>
-                <label id="check_pass"></label>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <label for="phone" class="block text-sm font-medium leading-6 text-gray-900">Phone Number</label>
+              <div class="mt-2">
+                <input type="number" name="phone" id="phone" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              </div>
             </div>
-            <button id="signup_button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">Sign Up</button>
-        </form>
-    </div>
+    
+            <div class="sm:col-span-3">
+                <label for="blood" class="block text-sm font-medium leading-6 text-gray-900">Blood Group</label>
+                <div class="mt-2">
+                  <select id="blood" name="blood" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
+                    <option>A+</option>
+                    <option>A-</option>
+                    <option>B+</option>
+                    <option>B-</option>
+                    <option>AB+</option>
+                    <option>AB-</option>
+                    <option>O+</option>
+                    <option>O-</option>
+                  </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10">
+            <div class="sm:col-span-3">
+              <label for="email" class="text-sm font-medium leading-6 text-gray-900">Email ID</label>
+              <div class="mt-2">
+                <input type="email" name="email" id="email" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              </div>
+            </div>
+        </div>
+
+        <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div class="sm:col-span-3">
+              <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+              <div class="mt-2">
+                <input type="password" name="password" id="password" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              </div>
+            </div>
+    
+            <div class="sm:col-span-3">
+              <label for="cpassword" class="block text-sm font-medium leading-6 text-gray-900">Confirm Password</label>
+              <div class="mt-2">
+                <input type="password" name="cpassword" id="cpassword" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" onkeyup="checkpass(this)" required>
+              </div>
+            </div>
+        </div>
+        <div class="mb-4">
+            <label class="p-4 text-gray-700 font-bold mb-2" id="check_pass"></label>
+        </div>
+        <div class="mb-4 w-full">
+            <button id="signup_button" class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Sign Up</button>
+        </div>
+    </form>
+</div>
 </body>
 <script type="text/javascript">
     var password = document.getElementById('password');
