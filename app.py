@@ -140,7 +140,7 @@ def add_product():
         data['products'].append(product)
         supabase.table("users").update({"shop": data}).eq('email', session['username']).execute()
         return redirect('/products')
-    return redirect('/login').
+    return redirect('/login')
 
 
 @app.route('/login')
