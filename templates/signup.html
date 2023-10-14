@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="flex justify-center items-center h-screen">
-        <form class="bg-blue-500 w-100 p-6 rounded-lg shadow-md">
+        <form class=" w-100 p-6 rounded-lg shadow-md">
             <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2" for="Name">Name</label>
@@ -24,12 +24,38 @@
             </div>
             <div class="mb-4">
                 <label class="block text-gray-700 font-bold mb-2" for="password">Confirm Password</label>
-                <input class="border border-gray-400 p-2 w-full" type="password" name="confirmpassword" id="confirmpassword" required>
+                <input class="border border-gray-400 p-2 w-full" type="password" name="confirmpassword" id="confirmpassword" onkeyup="checkpass(this)" required>
+                <label id="check_pass"></label>
             </div>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Login
-            </button>
+            <button id="signup_button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ">Sign Up</button>
         </form>
     </div>
 </body>
+<script type="text/javascript">
+    var password = document.getElementById('password');
+    function checkpass(elem)
+    {
+        if(elem.value.length>0)
+        {
+            if(elem.value != password.value)
+            {
+                document.getElementById('check_pass').innerText = "Password doesn't match!";
+                document.getElementById('check_pass').style.color = "red";
+            }
+            else if(elem.value == password.value)
+            {
+                document.getElementById('check_pass').innerText = "Password Matched!";
+                document.getElementById('check_pass').style.color = "green";
+            }
+            else
+            {
+                document.getElementById('check_pass').innerText = "";
+            }
+        }
+        else
+        {
+            document.getElementById('check_pass').innerText = "";
+        }
+    }
+</script>
 </html>
