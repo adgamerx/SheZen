@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login</title>
-        <!-- Include Tailwind CSS -->
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css">
-    </head>
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
     <body class="bg-gray-100">
         <div class="flex justify-center items-center h-screen">
-            <form class="bg-white p-6 w- rounded-lg shadow-md">
+            <form class="bg-white p-6 w-96 rounded-lg shadow-md">
                 <h2 class="text-2xl font-bold mb-6">Login</h2>
                 <div class="mb-4">
                     <label class="block text-gray-700 font-bold mb-2" for="username">
@@ -27,6 +22,5 @@
                     Login
                 </button>
             </form>
-        </div>
-    </body>
-</html>
+        </body>
+{% endblock %}
