@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css">
+</head>
+<body>
+    <div class="flex justify-center items-center h-screen">
+        <form class="bg-blue-500 w-100 p-6 rounded-lg shadow-md">
+            <h2 class="text-2xl font-bold mb-6">Sign Up</h2>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="Name">Name</label>
+                <input class="border border-gray-400 p-2 w-full" type="text" name="name" id="user_name" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="Name">Email ID</label>
+                <input class="border border-gray-400 p-2 w-full" type="email" name="email" id="email" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="password">Password</label>
+                <input class="border border-gray-400 p-2 w-full" type="password" name="password" id="password" required>
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="password">Confirm Password</label>
+                <input class="border border-gray-400 p-2 w-full" type="password" name="confirmpassword" id="confirmpassword" required>
+            </div>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Login
+            </button>
+        </form>
+    </div>
+</body>
+</html>

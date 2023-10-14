@@ -14,6 +14,7 @@ supabase: Client = create_client(url, key)
 def home():
     return render_template('index.html')
 
+<<<<<<< HEAD
 def gen_string(length):
     characters = string.ascii_letters + string.digits 
     key = ''.join(random.choice(characters) for _ in range(length))
@@ -102,5 +103,22 @@ def delete_profile():
     
 
 
+=======
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
+@app.route('/safeRoute')
+def safeRoute():
+    return render_template('safeRoute.html')
+>>>>>>> c867ea6cb26a5fcc5a8c029b95e87f04ba9fc0e5
 if __name__ == '__main__':
     app.run(debug=True)
