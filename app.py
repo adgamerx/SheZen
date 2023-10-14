@@ -14,7 +14,6 @@ supabase: Client = create_client(url, key)
 def home():
     return render_template('index.html')
 
-<<<<<<< HEAD
 def gen_string(length):
     characters = string.ascii_letters + string.digits 
     key = ''.join(random.choice(characters) for _ in range(length))
@@ -100,10 +99,50 @@ def delete_profile():
         data = supabase.table('users').delete().eq('email', user_data["email"]).execute()
         return render_template("register.html")
     
-    
+@app.route('/create-shop')
+def create_shop():
+    try:
+        if session['logged_in']:
+            data = request.get_json()
+            shop_data = {
+                "name": data['name'],
+                "category": data['category'],
+                "uid": data['uid'],
+                "products": []
+            }
+            supabase.table("users").update({"shop": shop_data}).eq('email', session['username']).execute()
+            return redirect('/products')
+        return redirect('/login')
+    except Exception as e:
+        return str(e)
+
+@app.route('/products')
+def products():
+    if session['logged_in']:
+        email = session['username']
+        data = supabase.table("users").select("*").eq("email": email).execute()[0]['shop']
+        return render_template('products.html')
+
+@app.route('/add-product')
+def add_product():
+    if session['logged_in']:
+        product_data = request.get_json()
+        data = supabase.table("users").select("*").eq("email": email).execute()[0]['shop']
+        pid = len(data) + 1
+        product = {
+            "name": product_data['name'],
+            "description": product_data['description'],
+            "pid": pid,
+            "images": product_data['images'],
+            "category": product_data['category'],
+            "price": product_data['price']
+        }
+        data['products'].append(product)
+        supabase.table("users").update({"shop": data}).eq('email', session['username']).execute()
+        return redirect('/products')
+    return redirect('/login').
 
 
-=======
 @app.route('/login')
 def login():
     return render_template('login.html')
@@ -119,6 +158,5 @@ def about():
 @app.route('/safeRoute')
 def safeRoute():
     return render_template('safeRoute.html')
->>>>>>> c867ea6cb26a5fcc5a8c029b95e87f04ba9fc0e5
 if __name__ == '__main__':
     app.run(debug=True)
