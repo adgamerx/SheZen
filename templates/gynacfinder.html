@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Gynecologist Finder</title>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQDm-jvpXkwWZjGi0fY6vDqznYIXOcMjs&libraries=places&v=3.30"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+       body {
+            background: linear-gradient(75deg, #ae1281, #576ae7);
+            background-attachment: fixed;
+        }
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background-color: #008000;
+      color: white;
+      padding: 10px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .card {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <h1 class="flex items-center justify-center text-3xl m-5">Gynecologist Finder</h1>
+
+  <div class="flex">
+    <input type="text" id="location" placeholder="Enter Location" class="rounded border p-4 border-gray-400 h-10 m-10 mr-5">
+    <button type="button" onclick="findNearestGynecologists()" class="bg-green-500 rounded w-full border border-gray-400 h-10 m-10">Find Gynecologists</button>
+  </div>
+
+  <div id="gynecologist-details">
+  </div>
+
+  <script>
+    var placesService;
+
+    // Create a Google Places autocomplete object for the location input field.
+    var locationAutocomplete = new google.maps.places.Autocomplete(document.getElementById('location'));
+
+    // Find gynecologists based on the entered location.
+    function findNearestGynecologists() {
+      var location = document.getElementById('location').value;
+
+      // Clear previous gynecologist details.
+      clearGynecologistDetails();
+
+      // Initialize the Places service.
+      placesService = new google.maps.places.PlacesService(document.createElement('div'));
+
+      // Geocode the entered location to obtain its LatLng.
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ 'address': location }, function(results, status) {
+        if (status === 'OK' && results.length > 0) {
+          var latLng = results[0].geometry.location;
+
+          // Search for gynecologists near the LatLng.
+          var request = {
+            location: latLng,
+            radius: 10000, // Search within a 10km radius
+            keyword: 'gynecologist'
+          };
+
+          placesService.nearbySearch(request, function(results, status) {
+            if (status === google.maps.places.PlacesServiceStatus.OK && results.length > 0) {
+              // Display the details of each gynecologist found.
+              for (var i = 0; i < results.length; i++) {
+                displayGynecologistDetails(results[i], i + 1);
+              }
+            } else {
+              alert('No gynecologists found near the entered location.');
+            }
+          });
+        } else {
+          alert('Location not found.');
+        }
+      });
+    }
+
+    function displayGynecologistDetails(gynecologist, index) {
+      var gynecologistName = gynecologist.name;
+      var gynecologistAddress = gynecologist.vicinity;
+      var rating = gynecologist.rating || "N/A";
+      var isOpen = gynecologist.opening_hours && gynecologist.opening_hours.isOpen ? "Open" : "Closed";
+
+      var card = document.createElement('div');
+      card.className = 'card';
+      card.innerHTML = `
+        <h2>Gynecologist #${index}:</h2>
+        <p><strong>Name:</strong> ${gynecologistName}</p>
+        <p><strong>Address:</strong> ${gynecologistAddress}</p>
+        <p><strong>Rating:</strong> ${rating}</p>
+        <p><strong>Is Open:</strong> ${isOpen}</p>
+      `;
+
+      document.getElementById('gynecologist-details').appendChild(card);
+    }
+
+    function clearGynecologistDetails() {
+      document.getElementById('gynecologist-details').innerHTML = '';
+    }
+  </script>
+</body>
+</html>

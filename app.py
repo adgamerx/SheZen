@@ -210,6 +210,9 @@ def add_reply():
         forum['replies'].append(reply)
         supabase.table('forum').update(forum).eq('email', email).execute()
         return redirect(f'/thread/{thread_id}')
+        data['products'].append(product)
+        supabase.table("users").update({"shop": data}).eq('email', session['username']).execute()
+        return redirect('/products')
     return redirect('/login')
 
 
