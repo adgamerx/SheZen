@@ -21,7 +21,25 @@
 
         <!-- Create a form for title desc -->
 
-        
+        <form class="mt-8" action="/submit-post" method="POST">
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="post-title">
+                    Post Title
+                </label>
+                <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="post-title" type="text" placeholder="Enter post title" name="post-title">
+            </div>
+            <div class="mb-4">
+                <label class="block text-gray-700 font-bold mb-2" for="post-desc">
+                    Post Description
+                </label>
+                <textarea class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="post-desc" placeholder="Enter post description" name="post-desc"></textarea>
+            </div>
+            <div class="flex items-center justify-between">
+                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
+                    Submit
+                </button>
+            </div>
+        </form>
 
         <!-- Latest Posts -->
         <div class="mt-8">
