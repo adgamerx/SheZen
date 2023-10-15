@@ -169,7 +169,7 @@ def logout():
 def add_thread():
     if session.get('logged_in'):
         user_data = request.get_json()
-        user = supabase.table('users').select(*).eq('email', session['username']).execute().data[0]['name']
+        user = supabase.table('users').select("*").eq('email', session['username']).execute().data[0]['name']
         thread = {
             'title': user_data['title'],
             'name': user_data['name'],
