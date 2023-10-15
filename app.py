@@ -1,4 +1,4 @@
-from flask import Flask, send_file, render_template, request, jsonify, session, redirect, logout_user
+from flask import Flask, send_file, render_template, request, jsonify, session, redirect
 import mailsend, os, string, random, bcrypt
 from supabase import create_client, Client
 
@@ -160,9 +160,9 @@ def add_product():
         return redirect('/create-shop')
     return redirect('/login')
 
-@app.route("/logout")
+@app.route('/logout')
 def logout():
-    logout_user()
+    session.clear()
     return redirect('/login')
 
 @app.route('/add-thread', methods=['POST'])
