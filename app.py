@@ -20,16 +20,12 @@ def home():
 
 @app.route('/register', methods=['POST'])
 def register():
-    try:
         user_data = request.get_json()
         password = user_data["password"]
-        bytes = password.encode('utf-8') 
-        salt = bcrypt.gensalt() 
-        pass_hash = bcrypt.hashpw(bytes, salt)
         verification_code = gen_string(20)
         user = {
             "name": user_data["name"],
-            "pass": pass_hash,
+            "pass": password,
             "phone": user_data["phone"],
             "blood_group": user_data["blood_group"],
             "age": user_data["age"],
@@ -39,69 +35,70 @@ def register():
             "verified": False
         }
         mailsend.verification_mail(email=user_data["email"], verification_code=verification_code, name=user_data["name"])
-        data = supabase.table("users").insert(user).execute()
+        supabase.table("users").insert(user).execute()
         return jsonify({"status": "registered"}), 200
-    except:
-        return jsonify({"status": "something went wrong"}), 400
 
 @app.route('/verify', methods=['GET'])
 def verify():
     verification_code = request.args.get("code")
     user = supabase.table('users').select('*').eq('verification_code', verification_code).execute()
     if user:
-        supabase.table("users").update({"verified": True, "verification_code": ""}).eq('verification_code', verification_code).execute()
-        session['username'] = user.data['email']
-        return render_template("dashboard.html")
+        auth_key = gen_string(length)
+        supabase.table("users").update({"verified": True, "verification_code": "", "auth_key": auth_key}).eq('verification_code', verification_code).execute()
+        response = make_response(render_template('index.html'))
+        response.headers['auth_key'] = auth_key
+        return response, 200
     return jsonify({"message": "email not verified"}), 401
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
-    data = request.get_json()
-    email = data['email']
-    password = data['password']
-    bytes = password.encode('utf-8') 
-    salt = bcrypt.gensalt() 
-    pass_hash = bcrypt.hashpw(bytes, salt)
-    user = supabase.table('users').select({"email": email}).execute()
-    if user.data['email'] == email and user.data['pass'] == pass_hash:
-        session['username'] = email
-        return render_template("dashboard.html"), 200
-    return 'Invalid credentials', 401
+    if request.method == 'GET':
+        return render_template('login.html')
+    else:
+        data = request.get_json()
+        email = data['email']
+        password = data['password']
+        user = supabase.table('users').select("*").eq("email",email).execute().data[0]
+        if user['email'] == email and user['pass'] == password:
+            auth_key = gen_string(length)
+            response = make_response(render_template('index.html'))
+            response.headers['auth_key'] = auth_key
+            return response, 200
+        return 'Invalid credentials', 401
 
 @app.route('/edit-profile', methods=['POST'])
 def edit_profile():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         user_data = request.get_json()
-        email = session['username']
         password = user_data["password"]
-        bytes = password.encode('utf-8') 
-        salt = bcrypt.gensalt() 
-        pass_hash = bcrypt.hashpw(bytes, salt)
         user = {
                 "name": user_data["name"],
-                "pass": pass_hash,
+                "pass": password,
                 "phone": user_data["phone"],
                 "blood_group": user_data["blood_group"],
                 "age": user_data["age"],
                 "email": user_data["email"],
                 "emergency_con": user_data["emergency_con"]
             }
-        supabase.table("users").update(user).eq('email', user_data["email"]).execute()
+            auth_key = user_data['auth_key']
+        supabase.table("users").update(user).eq('auth_key', auth_key).execute()
         return render_template("dashboard.html")
     return redirect("/login")
     
 @app.route('/delete-profile', methods=['POST'])
 def delete_profile():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         user_data = request.get_json()
-        email = session['username']
-        data = supabase.table('users').delete().eq('email', user_data["email"]).execute()
+        data = supabase.table('users').delete().eq('auth_key', auth_key).execute()
         return render_template("register.html")
     
 @app.route('/create-shop', methods=['POST'])
 def create_shop():
     try:
-        if session.get('logged_in'):
+        auth_key = request.headers['auth_key']
+        if auth_key:
             data = request.get_json()
             shop_data = {
                 "name": data['name'],
@@ -109,8 +106,8 @@ def create_shop():
                 "uid": data['uid'],
                 "products": []
             }
-            supabase.table("users").select("*").eq("email", email).execute()
-            supabase.table("users").update({"shop": shop_data}).eq('email', session['username']).execute()
+            supabase.table("users").select("*").eq("auth_key", auth_key).execute()
+            supabase.table("users").update({"shop": shop_data}).eq('auth_key', auth_key).execute()
             return redirect('/products')
         return redirect('/login')
     except Exception as e:
@@ -118,8 +115,9 @@ def create_shop():
 
 @app.route('/<shopid>/<pid>', methods=['GET'])
 def show_product(shopid, pid):
-    if session.get('logged_in'):
-        user_shop = supabase.table("users").select("*").eq("email", email).execute().data[0]['shop']
+    auth_key = request.headers['auth_key']
+    if auth_key:
+        user_shop = supabase.table("users").select("*").eq("auth_key", auth_key).execute().data[0]['shop']
         if user_shop:
             product = user_shop['products'][pid-1]
             return render_template('product.html', product=product)
@@ -129,9 +127,10 @@ def show_product(shopid, pid):
 
 @app.route('/products', methods=['GET'])
 def products():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         email = session['username']
-        data = supabase.table("users").select("*").eq("email", email).execute()
+        data = supabase.table("users").select("*").eq("auth_key", auth_key).execute()
         data = data.data[0]
         if data['shop']:
             products = data['shop']['products']
@@ -141,9 +140,10 @@ def products():
 
 @app.route('/add-product', methods=['POST'])
 def add_product():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         product_data = request.get_json()
-        data = supabase.table("users").select("*").eq("email", email).execute().data[0]
+        data = supabase.table("users").select("*").eq("auth_key", auth_key).execute().data[0]
         if data['shop']:
             pid = len(data) + 1
             product = {
@@ -155,21 +155,21 @@ def add_product():
                 "price": product_data['price']
             }
             data['products'].append(product)
-            supabase.table("users").update({"shop": data}).eq('email', session['username']).execute()
+            supabase.table("users").update({"shop": data}).eq('auth_key', auth_key).execute()
             return redirect('/products')
         return redirect('/create-shop')
     return redirect('/login')
 
 @app.route('/logout')
 def logout():
-    session.clear()
     return redirect('/login')
 
 @app.route('/add-thread', methods=['POST'])
 def add_thread():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         user_data = request.get_json()
-        user = supabase.table('users').select("*").eq('email', session['username']).execute().data[0]['name']
+        user = supabase.table('users').select("*").eq('auth_key', auth_key).execute().data[0]['name']
         thread = {
             'title': user_data['title'],
             'name': user_data['name'],
@@ -181,34 +181,37 @@ def add_thread():
 
 @app.route('/thread/<id>')
 def show_thread(id):
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         threads = supabase.table('forum').select('*').eq('id', id).execute().data[0]
         return render_template('thread.html', threads=threads)
     return redirect('/login')
 
 @app.route('/forum')
 def forum():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         forum = supabase.table('forum').select('*').execute().data
         return render_template('forum.html', forum=forum)
     return redirect('/login')
 
 @app.route('/add-reply')
 def add_reply():
-    if session.get('logged_in'):
+    auth_key = request.headers['auth_key']
+    if auth_key:
         reply_text = request.form['reply']
         thread_id = request.form['id']
-        name = supabase.table('users').select("*").eq('email', session['username']).execute().data[0]['name']
+        name = supabase.table('users').select("*").eq('auth_key', auth_key).execute().data[0]['name']
         reply = {
             "reply": reply_text,
             "name": name
         }
         forum = supabase.table('forum').select('*').eq('id', thread_id).execute().data
         forum['replies'].append(reply)
-        supabase.table('forum').update(forum).eq('email', email).execute()
+        supabase.table('forum').update(forum).eq('auth_key', auth_key).execute()
         return redirect(f'/thread/{thread_id}')
         data['products'].append(product)
-        supabase.table("users").update({"shop": data}).eq('email', session['username']).execute()
+        supabase.table("users").update({"shop": data}).eq('auth_key', auth_key).execute()
         return redirect('/products')
     return redirect('/login')
 
