@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css">
 </head>
 <body>
-    <div class="flex justify-center items-center h-screen">
-        <form class="md:w-1/2 sm:w-5/6 p-6 rounded-lg shadow-md">
+    <div class="flex justify-center items-center h-screen flex-col">
+        <form class="md:w-1/2 sm:w-5/6 p-6 rounded-lg shadow-md" method="post" action="/edit-profile">
             <div class="">
                 <div class="border-b border-gray-900/10 pb-4">
                     <h3 class="font-bold leading-7 text-gray-900">Edit Profile</h3>
@@ -85,9 +85,12 @@
             <div class="mb-4 w-full">
                 <button id="signup_button" class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Update</button>
             </div>
-            <div class="mb-4 w-full">
-                <button id="delete_button" class="bg-red-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Delete Pofile</button>
-            </div>
+            
+        </form>
+        <form class="md:w-1/2 sm:w-5/6 p-6 rounded-lg shadow-md" action="/delete-profile" method="post">
+          <div class="mb-4 w-full">
+            <button id="delete_button" class="bg-red-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Delete Pofile</button>
+        </div>
         </form>
     </div>
 </body>
