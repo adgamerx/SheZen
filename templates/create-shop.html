@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create your shop here!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.7/tailwind.min.css">
+</head>
+<body>
+    <div class="flex justify-center items-center h-screen">
+        <form class="md:w-96 sm:w-5/6 p-6 rounded-lg shadow-md">
+            <div class="">
+                <div class="border-b border-gray-900/10 pb-4">
+                    <h3 class="font-bold leading-7 text-gray-900">Fill the form to create your shop!</h3>
+                </div>
+            </div>
+
+            <div class="mt-10">
+                <div class="sm:col-span-3">
+                    <label for="shopname" class="block text-sm font-medium leading-6 text-gray-900">Shop Name</label>
+                    <div class="mt-2">
+                      <input type="text" name="shopname" id="shopname" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+                    </div>
+                  </div>
+            </div>
+    
+        
+    
+            <div class="mt-10">
+                <div class="sm:col-span-3">
+                  <label for="ShopID" class="text-sm font-medium leading-6 text-gray-900">Shop ID</label>
+                  <div class="mt-2">
+                    <input type="text" name="shopid" id="shopid" class="p-4 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+                  </div>
+                </div>
+            </div>
+
+            <div class="m-4 w-full">
+                <button id="signup_button" class="bg-blue-500 w-full hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full">Create Your Shop</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
