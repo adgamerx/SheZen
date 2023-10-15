@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Post Title - Forum App</title>
+    <!-- Include Tailwind CSS CDN or link to your local file -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.16/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <!-- Navigation Bar -->
+    <nav class="bg-blue-500 p-4">
+      <div class="container mx-auto">
+        <a href="/" class="text-white text-2xl font-bold">SheZen Forum</a>
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <div class="container mx-auto mt-8 p-8">
+      <h1 class="text-3xl font-bold">Post Title</h1>
+      <p class="text-gray-600">Author: Author Name</p>
+
+      <!-- Post Description -->
+      <div class="mt-4">
+        <h2 class="text-xl font-semibold">Description</h2>
+        <p>This is the full post description text.</p>
+      </div>
+
+      <!-- Replies -->
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold">Replies</h2>
+        <ul class="mt-4">
+          <li class="mb-4">
+            <div class="mb-1"><strong>Reply Author 1:</strong></div>
+            <div class="ml-28">Reply content 1</div>
+          </li>
+          <li class="mb-4">
+            <div class="mb-1"><strong>Reply Author 2:</strong></div>
+            <div class="ml-28">Reply content 2</div>
+          </li>
+          <!-- Add more reply items here -->
+        </ul>
+      </div>
+
+      <!-- Add Reply Form -->
+      <div class="mt-8">
+        <h2 class="text-xl font-semibold">Add a Reply</h2>
+        <form action="/add_reply" method="post">
+          <textarea
+            name="reply"
+            class="w-full p-2 border rounded"
+            rows="4"
+            placeholder="Your reply here"
+          ></textarea>
+          <div class="mt-4">
+            <button
+              type="submit"
+              class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+            >
+              Submit Reply
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
