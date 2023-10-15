@@ -1,90 +1,210 @@
 <!DOCTYPE html>
 <html>
-
-<head>
+  <head>
     <title>Tool Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            background: linear-gradient(75deg, #ae1281, #576ae7);
-            background-attachment: fixed;
-        }
+      body {
+        background: linear-gradient(75deg, #ae1281, #576ae7);
+        background-attachment: fixed;
+      }
 
-        .card {
-            background: rgba(255, 255, 255, 0.9);
+      .card {
+        background: rgba(255, 255, 255, 0.9);
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+      }
+
+      .card-group {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .card-item {
+        flex: 0 0 calc(50% - 20px);
+        margin: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .card-item {
+          flex: 0 0 100%;
         }
+      }
     </style>
-</head>
+  </head>
 
-<body class="font-sans text-center bg-opacity-80 flex items-center justify-center h-screen">
-    <div class="text-white w-full">
-        <h1 class="text-5xl font-semibold mt-6">Welcome to SheZen</h1>
-        <p class="text-s pb-4">Empowring Women, Ensuring Safety</p>
-        <div class="flex flex-wrap justify-center">
+  <body
+    class="font-sans text-center bg-opacity-80 flex items-center justify-center h-screen"
+  >
+    <div class="text-white w-full h-full">
+      <h1 class="text-5xl font-semibold mt-6">Welcome to SheZen</h1>
+      <p class="text-s pb-4">Empowering Women, Ensuring Safety</p>
 
-            <!-- Card 1: Safe Route Finder -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="safeRoute.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/route.png" alt="Safe Route Finder Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Safe Route Finder</h2>
-                    <p class="text-gray-600">Find the safest routes for your journeys.</p>
-                </a>
+      <div class="flex flex-col items-center justify-center">
+        <div class="card-group mt-10">
+          <!-- Card 1: Safe Route Finder -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="safeRoute.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/route.png"
+                  alt="Safe Route Finder Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Safe Route Finder</h2>
+                <p class="text-gray-600">
+                  Find the safest routes for your journeys.
+                </p>
+              </a>
             </div>
+          </div>
 
-            <!-- Card 2: Gynecologist Finder -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="gynacfinder.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/search.png" alt="Gynecologist Finder Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Gynecologist Finder</h2>
-                    <p class="text-gray-600">Discover nearby gynecologists details.</p>
-                </a>
+          <!-- Card 2: Gynecologist Finder -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="gynacfinder.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/search.png"
+                  alt="Gynecologist Finder Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Gynecologist Finder</h2>
+                <p class="text-gray-600">
+                  Discover nearby gynecologists' details.
+                </p>
+              </a>
             </div>
+          </div>
 
-            <!-- Card 3: Period Tracker (Replace with your content) -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="periodtracker.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/tracker.png" alt="Period Tracker Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Period Tracker</h2>
-                    <p class="text-gray-600">Track your menstrual cycle and health.</p>
-                </a>
+          <!-- Card 3: Period Tracker -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="periodtracker.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/tracker.png"
+                  alt="Period Tracker Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Period Tracker</h2>
+                <p class="text-gray-600">
+                  Track your menstrual cycle and health.
+                </p>
+              </a>
             </div>
+          </div>
 
-            <!-- Card 4: Marketplace (Replace with your content) -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="market-place.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/retailer.png" alt="Marketplace Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Marketplace</h2>
-                    <p class="text-gray-600">Explore and buy products online.</p>
-                </a>
+          <!-- Card 4: Marketplace -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="market-place.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/retailer.png"
+                  alt="Marketplace Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Marketplace</h2>
+                <p class="text-gray-600">Explore and buy products online.</p>
+              </a>
             </div>
+          </div>
 
-            <!-- Card 5: Forum (Replace with your content) -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="forum.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/discussion.png" alt="Forum Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Forum</h2>
-                    <p class="text-gray-600">Join discussions and share knowledge.</p>
-                </a>
+          <!-- Card 5: Forum -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="forum.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/discussion.png"
+                  alt="Forum Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Forum</h2>
+                <p class="text-gray-600">Join discussions and share knowledge.</p>
+              </a>
             </div>
+          </div>
 
-            <!-- Card 6: Guides (Replace with your content) -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="guides.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/guide-book.png" alt="Guides Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Guides</h2>
-                    <p class="text-gray-600">Access informative guides and tutorials.</p>
-                </a>
+          <!-- Card 6: Guides -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="guides.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/guide-book.png"
+                  alt="Guides Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Guides</h2>
+                <p class="text-gray-600">
+                  Access informative guides and tutorials.
+                </p>
+              </a>
             </div>
+          </div>
 
-            <!-- Card 7: Edit Profile -->
-            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
-                <a href="editprofile.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
-                    <img src="../static/images/user.png" alt="Edit Profile Icon" class="mx-auto w-16 h-16 m-4">
-                    <h2 class="text-xl font-semibold">Edit Profile</h2>
-                    <p class="text-gray-600">Edit your profile details.</p>
-                </a>
+          <!-- Card 7: Edit Profile -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="editprofile.html"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/user.png"
+                  alt="Edit Profile Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Edit Profile</h2>
+                <p class="text-gray-600">Edit your profile details.</p>
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 8: Log Out -->
+          <div class="card-item">
+            <div class="card rounded-lg">
+              <a
+                href="/logout"
+                class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300"
+              >
+                <img
+                  src="../static/images/shutdown.png"
+                  alt="Log Out Icon"
+                  class="mx-auto w-16 h-16 m-4"
+                />
+                <h2 class="text-xl font-semibold text-purple-800">Log Out</h2>
+                <p class="text-gray-600">Logout from your account.</p>
+              </a>
+            </div>
+          </div>
         </div>
-    </div>
-</body>
 
+        <footer class="bg-gray-800 w-full text-gray-300 py-4">
+          <div class="text-center">&copy; 2023 SheZen. All rights reserved.</div>
+        </footer>
+      </div>
+    </div>
+  </body>
 </html>
