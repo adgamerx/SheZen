@@ -64,22 +64,24 @@ def login():
             return render_template("index.html"), 200
         return 'Invalid credentials', 401
 
-@app.route('/edit-profile', methods=['POST'])
+@app.route('/edit-profile', methods=['POST', 'GET'])
 def edit_profile():
     if session.get('logged_in'):
-        email = session['username']
-        password = user_data["password"]
-        user = {
-                "name": request.form['name'],
-                "pass": request.form['password'],
-                "phone": request.form['phone'],
-                "blood_group": request.form['blood'],
-                "age": request.form['age'],
-                "email": request.form['email'],
-                "emergency_con": request.form['emergency_con']
-            }
-        supabase.table("users").update(user).eq('email', user_data["email"]).execute()
-        return render_template("dashboard.html")
+        if request.method == 'POST':
+            email = session['username']
+            password = user_data["password"]
+            user = {
+                    "name": request.form['name'],
+                    "pass": request.form['password'],
+                    "phone": request.form['phone'],
+                    "blood_group": request.form['blood'],
+                    "age": request.form['age'],
+                    "email": request.form['email'],
+                    "emergency_con": request.form['emergency_con']
+                }
+            supabase.table("users").update(user).eq('email', user_data["email"]).execute()
+            return render_template("dashboard.html")
+        return render_template("editprofile.html")
     return redirect("/login")
     
 @app.route('/delete-profile', methods=['POST'])
@@ -191,6 +193,35 @@ def add_reply():
         return redirect('/products')
     return redirect('/login')
 
+
+    
+@app.route("/guides")
+def guides():
+    return render_template("guide_cards.html")
+
+@app.route("/periodtracker")
+def periodtracker():
+    return render_template("periodtracker.html")
+
+@app.route("/saferoute")
+def saferoute():
+    return render_template("safeRoute.html")
+
+@app.route("/gynacfinder")
+def gynac():
+    return render_template("gynacfinder.html")
+
+@app.route("/financial-independence")
+def finde():
+    return render_template("financial-independence.html")
+
+@app.route("/periodguide")
+def periodguide():
+    return render_template("periods.html")
+
+@app.route("/maternity-guide")
+def maternity():
+    return render_template("maternity-guide.html")
 
 if __name__ == '__main__':
     app.run(debug=True)
