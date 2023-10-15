@@ -1,13 +1,89 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
+    <title>Tool Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.15/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(75deg, #ae1281, #576ae7);
+            background-attachment: fixed;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+        }
+    </style>
 </head>
-<body>
-  <h1 class="text-3xl text-red-500 font-bold underline">
-    Hello world!
-  </h1>
+
+<body class="font-sans text-center bg-opacity-80 flex items-center justify-center h-screen">
+    <div class="text-white w-full">
+        <h1 class="text-3xl font-semibold my-6">Welcome to SheZen ⚡</h1>
+        <div class="flex flex-wrap justify-center">
+
+            <!-- Card 1: Safe Route Finder -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="safeRoute.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/route.png" alt="Safe Route Finder Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Safe Route Finder</h2>
+                    <p class="text-gray-600">Find the safest routes for your journeys.</p>
+                </a>
+            </div>
+
+            <!-- Card 2: Gynecologist Finder -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="gynacfinder.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/search.png" alt="Gynecologist Finder Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Gynecologist Finder</h2>
+                    <p class="text-gray-600">Discover nearby gynecologists details.</p>
+                </a>
+            </div>
+
+            <!-- Card 3: Period Tracker (Replace with your content) -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="periodtracker.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/tracker.png" alt="Period Tracker Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Period Tracker</h2>
+                    <p class="text-gray-600">Track your menstrual cycle and health.</p>
+                </a>
+            </div>
+
+            <!-- Card 4: Marketplace (Replace with your content) -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="marketplace.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/retailer.png" alt="Marketplace Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Marketplace</h2>
+                    <p class="text-gray-600">Explore and buy products online.</p>
+                </a>
+            </div>
+
+            <!-- Card 5: Forum (Replace with your content) -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="forum.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/discussion.png" alt="Forum Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Forum</h2>
+                    <p class="text-gray-600">Join discussions and share knowledge.</p>
+                </a>
+            </div>
+
+            <!-- Card 6: Guides (Replace with your content) -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="guides.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/guide-book.png" alt="Guides Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Guides</h2>
+                    <p class="text-gray-600">Access informative guides and tutorials.</p>
+                </a>
+            </div>
+
+            <!-- Card 7: Edit Profile -->
+            <div class="m-4 card rounded-lg flex flex-col sm:flex-row">
+                <a href="editprofile.html" class="block rounded-lg bg-white shadow-md p-4 hover:shadow-lg transition duration-300">
+                    <img src="../static/images/user.png" alt="Edit Profile Icon" class="mx-auto w-16 h-16 m-4">
+                    <h2 class="text-xl font-semibold">Edit Profile</h2>
+                    <p class="text-gray-600">Edit your profile details.</p>
+                </a>
+        </div>
+    </div>
 </body>
+
 </html>
