@@ -1,67 +1,97 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Safe Route Finder</title>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQDm-jvpXkwWZjGi0fY6vDqznYIXOcMjs&libraries=places&v=3.54"></script>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    #map {
-      height: 400px;
-      width: 100%;
-    }
+  <head>
+    <title>Safe Route Finder</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCQDm-jvpXkwWZjGi0fY6vDqznYIXOcMjs&libraries=places&v=3.54"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      #map {
+        height: 400px;
+        width: 100%;
+      }
 
-    input {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      margin-bottom: 10px;
-    }
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        margin-bottom: 10px;
+      }
 
-    button {
-      background-color: #008000;
-      color: white;
-      padding: 10px;
-      border: none;
-      cursor: pointer;
-    }
-  </style>
-</head>
-<body>
-  <h1 class="flex items-center justify-center text-3xl m-5">Safe Route Finder</h1>
+      button {
+        background-color: #008000;
+        color: white;
+        padding: 10px;
+        border: none;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 class="flex items-center justify-center text-3xl m-5">
+      Safe Route Finder
+    </h1>
 
-  <div class="flex">
-    <input type="text" id="origin" placeholder="Origin" class="rounded border p-4 border-gray-400 h-10 m-10 mr-5">
-    <input type="text" id="destination" class="rounded ml-5  border p-4 border-gray-400 h-10 m-10" placeholder="Destination">
-    <button type="button" onclick="getSafeRoute()" class="bg-green-500 rounded w-full border border-gray-400 h-10 m-10">Get Safe Route</button>
-  </div>
+    <div class="flex">
+      <input
+        type="text"
+        id="origin"
+        placeholder="Origin"
+        class="rounded border p-4 border-gray-400 h-10 m-10 mr-5"
+      />
+      <input
+        type="text"
+        id="destination"
+        class="rounded ml-5 border p-4 border-gray-400 h-10 m-10"
+        placeholder="Destination"
+      />
+      <button
+        type="button"
+        onclick="displayRouteAndPOIs()"
+        class="bg-green-500 rounded w-full border border-gray-400 h-10 m-10"
+      >
+        Get Safe Route
+      </button>
+    </div>
 
-  <div id="map"></div>
+    <div id="map"></div>
 
-  <script>
-    // Create a directions service.
-    var directionsService = new google.maps.DirectionsService();
+    <script>
+      // Create a directions service.
+      var directionsService = new google.maps.DirectionsService();
 
-    // Create a traffic layer.
-    var trafficLayer = new google.maps.TrafficLayer();
+      var placesService;
+    var markers = [];
 
-     // Create a directions service.
-     var directionsService = new google.maps.DirectionsService();
+      // Create a traffic layer.
+      var trafficLayer = new google.maps.TrafficLayer();
 
-    // Create a map.
-    var map = new google.maps.Map(document.getElementById('map'), {
-      zoom: 15,
-      center: {lat: 40.7127837, lng: -74.0059413}
-    });
+      // Create a directions service.
+      var directionsService = new google.maps.DirectionsService();
 
-    // Add the traffic layer to the map.
-    // trafficLayer.setMap(map);
+      // Create a map.
+      var map = new google.maps.Map(document.getElementById("map"), {
+        zoom: 15,
+        center: { lat: 40.7127837, lng: -74.0059413 },
+        styles: [
+          {
+            featureType: 'poi',
+            stylers: [{ visibility: 'off' }] // Hide other points of interest
+          }
+        ]
+      });
 
-    // Create a Google Places autocomplete object for the origin and destination input fields.
-    var originAutocomplete = new google.maps.places.Autocomplete(document.getElementById('origin'));
-    var destinationAutocomplete = new google.maps.places.Autocomplete(document.getElementById('destination'));
+      // Add the traffic layer to the map.
+      // trafficLayer.setMap(map);
 
-   // Get the safe route from point A to point B.
-    function getSafeRoute() {
+      // Create a Google Places autocomplete object for the origin and destination input fields.
+      var originAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById("origin")
+      );
+      var destinationAutocomplete = new google.maps.places.Autocomplete(
+        document.getElementById("destination")
+      );
+
+      function displayRouteAndPOIs() {
       var origin = document.getElementById('origin').value;
       var destination = document.getElementById('destination').value;
 
@@ -69,28 +99,92 @@
       var directionsRequest = {
         origin: origin,
         destination: destination,
-        travelMode: google.maps.TravelMode.DRIVING,
-        provideRouteAlternatives: true, // Request multiple route options
-        drivingOptions: {
-          departureTime: new Date(Date.now()),  // for the time N milliseconds from now.
-          trafficModel: 'pessimistic'
-        }
+        travelMode: google.maps.TravelMode.DRIVING
       };
 
-      // Route the request.
-      directionsService.route(directionsRequest, function(response, status) {
+      // Initialize the map if it hasn't been done yet.
+      if (!map) {
+        initializeMap();
+      }
 
+      // Clear previous markers.
+      clearMarkers();
+
+      // Route the request and display the route on the map.
+      directionsService.route(directionsRequest, function(response, status) {
         if (status === google.maps.DirectionsStatus.OK) {
           var route = response.routes[0];
           var directionsDisplay = new google.maps.DirectionsRenderer({
             map: map,
             directions: response
           });
+
+          // Initialize the Places service.
+          placesService = new google.maps.places.PlacesService(map);
+
+          // Show nearby hospitals and police stations along the route.
+          showNearbyPOIsAlongRoute(route, 'hospital');
+          showNearbyPOIsAlongRoute(route, 'police');
         } else {
           alert('An error occurred while routing the request.');
         }
       });
     }
+
+    function showNearbyPOIsAlongRoute(route, type) {
+      for (var i = 0; i < route.legs.length; i++) {
+        var leg = route.legs[i];
+        var steps = leg.steps;
+        for (var j = 0; j < steps.length; j++) {
+          var step = steps[j];
+          var startLocation = step.start_location;
+          var endLocation = step.end_location;
+
+          // Calculate the midpoint of the step.
+          var midpoint = new google.maps.LatLng(
+            (startLocation.lat() + endLocation.lat()) / 2,
+            (startLocation.lng() + endLocation.lng()) / 2
+          );
+
+          // Show nearby POIs (hospitals or police stations) along the route.
+          showNearbyPOIs(midpoint, type);
+        }
+      }
+    }
+
+    function showNearbyPOIs(location, type) {
+      var request = {
+        location: location,
+        radius: 1000, // Search within a 1km radius along the route
+        type: [type]
+      };
+
+      placesService.nearbySearch(request, function(results, status) {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            var place = results[i];
+            var marker = new google.maps.Marker({
+              map: map,
+              position: place.geometry.location,
+              title: place.name,
+              icon: {
+                url: 'https://maps.google.com/mapfiles/ms/icons/' + (type === 'hospital' ? 'red' : 'blue') + '-dot.png',
+              }
+            });
+
+            // Save the marker in the array for later removal.
+            markers.push(marker);
+          }
+        }
+      });
+    }
+
+    function clearMarkers() {
+      for (var i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+      }
+      markers = [];
+    }
   </script>
-</body>
+  </body>
 </html>
