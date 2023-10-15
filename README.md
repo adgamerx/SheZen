@@ -1,5 +1,6 @@
 # SheZen
 
+![image](https://github.com/adgamerx/SheZen/assets/40134208/fd62057a-7f8e-4977-8a40-69e182f898bb)
 
 
 
@@ -113,3 +114,8 @@ By following these steps, you've successfully set up and run an existing Flask p
     - [Aman Sharma](https://www.linkedin.com/in/adgamerx/)
     - [Bhavya Bhagwani](https://www.linkedin.com/in/bhavyabhagwani/)
     - [Raj Priya Singh](https://www.linkedin.com/in/raj-priya-singh-ba49541a0/)
+
+
+### Screenshots
+
+![image](https://github.com/adgamerx/SheZen/assets/40134208/50c13c7f-9b9b-4fe4-a577-cd25b118bc97)
