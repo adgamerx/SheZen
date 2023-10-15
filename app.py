@@ -1,9 +1,6 @@
 from flask import Flask, send_file, render_template, request, jsonify, session, redirect, logout_user
 import mailsend, os, string, random, bcrypt
 from supabase import create_client, Client
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'super_secret'
