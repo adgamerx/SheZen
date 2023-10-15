@@ -45,6 +45,6 @@
 
 **Team Members**
     - [Abhishek Verma](https://www.linkedin.com/in/w3abhishek/)
-    - Aman Sharma](https://www.linkedin.com/in/adgamerx/)
+    - [Aman Sharma](https://www.linkedin.com/in/adgamerx/)
     - [Bhavya Bhagwani](https://www.linkedin.com/in/bhavyabhagwani/)
     - [Raj Priya Singh](https://www.linkedin.com/in/raj-priya-singh-ba49541a0/)
