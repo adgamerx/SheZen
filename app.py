@@ -122,7 +122,7 @@ def show_product(shopid, pid):
     return redirect('/login')
 
 
-@app.route('/products', methods=['GET'])
+@app.route('/market', methods=['GET'])
 def products():
     if session.get('logged_in'):
         email = session['username']
@@ -132,10 +132,8 @@ def products():
             for user in data:
                 shop_data = user.get('shop', {})  # Get the 'shop' data or an empty dictionary
                 businesses.append(shop_data)
-
-            if businesses:  # Check if there are 'shop' entries in the array
-                products = businesses[0].get('products', [])  # Assuming we're looking at the first user's 'shop' data
-                return render_template('market.html', products=products)
+# Assuming we're looking at the first user's 'shop' data
+                return render_template('market.html', shops=businesses)
         except:
             return redirect('/create-shop')
     return redirect('/login')
@@ -145,25 +143,26 @@ def logout():
     session.clear()
     return redirect('/login')
 
-@app.route('/add-thread', methods=['POST'])
+@app.route('/submit-post', methods=['POST'])
 def add_thread():
     if session.get('logged_in'):
-        user_data = request.get_json()
+        thread_title = request.form['post-title']
+        thread_desc = request.form['post-desc']
         user = supabase.table('users').select("*").eq('email', session['username']).execute().data[0]['name']
         thread = {
-            'title': user_data['title'],
-            'name': user_data['name'],
-            'description': user_data['description'],
+            'title': thread_title,
+            'name': user,
+            'description': thread_desc,
             'replies': []
         }
         thread_data = supabase.table('forum').insert(thread).execute()
-        return redirect(f'/thread/{thread_data.data[0].id}')
+        return redirect('/forum')
 
 @app.route('/thread/<id>')
 def show_thread(id):
     if session.get('logged_in'):
         threads = supabase.table('forum').select('*').eq('id', id).execute().data[0]
-        return render_template('thread.html', threads=threads)
+        return render_template('post.html', threads=threads, id=id)
     return redirect('/login')
 
 @app.route('/forum')
@@ -173,7 +172,7 @@ def forum():
         return render_template('forum.html', forum=forum)
     return redirect('/login')
 
-@app.route('/add-reply')
+@app.route('/add-reply', methods=['POST'])
 def add_reply():
     if session.get('logged_in'):
         reply_text = request.form['reply']

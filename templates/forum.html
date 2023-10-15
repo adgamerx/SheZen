@@ -45,14 +45,12 @@
         <div class="mt-8">
             <h2 class="text-xl font-semibold">Latest Posts</h2>
             <ul class="mt-4">
+                {% for post in forum %}
                 <li class="mb-2">
-                    <a href="/post/1" class="text-blue-500 hover:underline">Post Title 1</a>
-                    <p class="text-gray-600">Author: Author Name 1</p>
+                    <a href="/thread/{{ post.id }}" class="text-blue-500 hover:underline">{{ post.title }}</a>
+                    <p class="text-gray-600">{{ post.name }}</p>
                 </li>
-                <li class="mb-2">
-                    <a href="/post/2" class="text-blue-500 hover:underline">Post Title 2</a>
-                    <p class="text-gray-600">Author: Author Name 2</p>
-                </li>
+              {% endfor %}
                 <!-- Add more post links here -->
             </ul>
         </div>

@@ -20,27 +20,24 @@
 
     <!-- Content -->
     <div class="container mx-auto mt-8 p-8">
-      <h1 class="text-3xl font-bold">Post Title</h1>
-      <p class="text-gray-600">Author: Author Name</p>
+      <h1 class="text-3xl font-bold">{{ threads.title }}</h1>
+      <p class="text-gray-600">Author: {{ threads.name }}</p>
 
       <!-- Post Description -->
       <div class="mt-4">
-        <h2 class="text-xl font-semibold">Description</h2>
-        <p>This is the full post description text.</p>
+        <p>{{ threads.description }}</p>
       </div>
 
       <!-- Replies -->
       <div class="mt-8">
         <h2 class="text-xl font-semibold">Replies</h2>
         <ul class="mt-4">
+          {% for reply in threads.replies %}
           <li class="mb-4">
-            <div class="mb-1"><strong>Reply Author 1:</strong></div>
-            <div class="ml-28">Reply content 1</div>
+            <div class="mb-1"><strong>reply.name</strong></div>
+            <div class="ml-28">reply.reply</div>
           </li>
-          <li class="mb-4">
-            <div class="mb-1"><strong>Reply Author 2:</strong></div>
-            <div class="ml-28">Reply content 2</div>
-          </li>
+          {% endfor %}
           <!-- Add more reply items here -->
         </ul>
       </div>
@@ -48,7 +45,8 @@
       <!-- Add Reply Form -->
       <div class="mt-8">
         <h2 class="text-xl font-semibold">Add a Reply</h2>
-        <form action="/add_reply" method="post">
+        <form action="/add-reply" method="post">
+          <input type="text" value="{{ id }}" name="id">
           <textarea
             name="reply"
             class="w-full p-2 border rounded"
