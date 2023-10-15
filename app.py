@@ -1,9 +1,6 @@
-from flask import Flask, send_file, render_template, request, jsonify, session, redirect, logout_user
+from flask import Flask, send_file, render_template, request, jsonify, session, redirect
 import mailsend, os, string, random, bcrypt
 from supabase import create_client, Client
-from dotenv import load_dotenv
-
-load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'super_secret'
@@ -163,16 +160,16 @@ def add_product():
         return redirect('/create-shop')
     return redirect('/login')
 
-@app.route("/logout")
+@app.route('/logout')
 def logout():
-    logout_user()
+    session.clear()
     return redirect('/login')
 
 @app.route('/add-thread', methods=['POST'])
 def add_thread():
     if session.get('logged_in'):
         user_data = request.get_json()
-        user = supabase.table('users').select(*).eq('email', session['username']).execute().data[0]['name']
+        user = supabase.table('users').select("*").eq('email', session['username']).execute().data[0]['name']
         thread = {
             'title': user_data['title'],
             'name': user_data['name'],
