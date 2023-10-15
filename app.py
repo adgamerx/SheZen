@@ -1,9 +1,11 @@
 from flask import Flask, send_file, render_template, request, jsonify, session, redirect
 import mailsend, os, string, random, bcrypt
 from supabase import create_client, Client
+from flask_session import Session
 
 app = Flask(__name__)
-app.secret_key = 'super_secret'
+app.config['SESSION_TYPE'] = 'filesystem'  # Use a proper session storage type
+Session(app)
 
 url: str = os.environ.get("SUPABASE_URL")
 key: str = os.environ.get("SUPABASE_KEY")
@@ -43,7 +45,8 @@ def verify():
     user = supabase.table('users').select('*').eq('verification_code', verification_code).execute()
     if user:
         supabase.table("users").update({"verified": True, "verification_code": ""}).eq('verification_code', verification_code).execute()
-        session['username'] = user.data['email']
+        session['logged_in'] = True
+        session['username'] = user.data[0]['email']
         return render_template("dashboard.html")
     return jsonify({"message": "email not verified"}), 401
 
@@ -56,7 +59,8 @@ def login():
         password = request.form['password']
         user = supabase.table('users').select("*").eq("email",email).execute().data[0]
         if user['email'] == email and user['pass'] == password:
-            session['username'] = email
+            session['logged_in'] = True
+            session['username'] = user['email']
             return render_template("index.html"), 200
         return 'Invalid credentials', 401
 
@@ -85,21 +89,23 @@ def delete_profile():
         data = supabase.table('users').delete().eq('email', user_data["email"]).execute()
         return redirect('/register')
     
-@app.route('/create-shop', methods=['POST'])
+@app.route('/create-shop', methods=['POST', 'GET'])
 def create_shop():
     try:
         if session.get('logged_in'):
-            name = request.form['shopname']
-            desc = request.form['shopdesc']
-            uid = request.form['shopid']
-            shop_data = {
-                "name": name,
-                "desc": desc,
-                "uid": uid
-            }
-            email = session['username']
-            supabase.table("users").update({"shop": shop_data}).eq('email', session['username']).execute()
-            return redirect('/products')
+            if request.method == "POST":
+                name = request.form['shopname']
+                desc = request.form['shopdesc']
+                uid = request.form['shopid']
+                shop_data = {
+                    "name": name,
+                    "desc": desc,
+                    "uid": uid
+                }
+                email = session['username']
+                supabase.table("users").update({"shop": shop_data}).eq('email', session['username']).execute()
+                return redirect('/products')
+            return render_template("create-shop.html")
         return redirect('/login')
     except Exception as e:
         return str(e)
@@ -121,13 +127,17 @@ def products():
     if session.get('logged_in'):
         email = session['username']
         businesses = []
-        data = supabase.table("users").select("*").execute().data
-        for user in data:
-            businesses.append(user['shop'])
-        if data['shop']:
-            products = data['shop']['products']
-            return render_template('products.html', products=products)
-        return redirect('/create-shop')
+        try:
+            data = supabase.table("users").select("*").execute().data
+            for user in data:
+                shop_data = user.get('shop', {})  # Get the 'shop' data or an empty dictionary
+                businesses.append(shop_data)
+
+            if businesses:  # Check if there are 'shop' entries in the array
+                products = businesses[0].get('products', [])  # Assuming we're looking at the first user's 'shop' data
+                return render_template('market.html', products=products)
+        except:
+            return redirect('/create-shop')
     return redirect('/login')
 
 @app.route('/logout')
