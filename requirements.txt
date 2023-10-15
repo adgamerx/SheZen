@@ -3,3 +3,4 @@ flask_cors
 bcrypt
 supabase
 gunicorn
+flask_session
