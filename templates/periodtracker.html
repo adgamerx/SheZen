@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menstrual Cycle Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 p-4">
+    <div class="max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4">Menstrual Cycle Tracker</h1>
+        <form id="cycle-tracker-form">
+            <div class="mb-4">
+                <label for="start-date" class="block text-gray-700">Start Date:</label>
+                <input type="date" id="start-date" name="start-date" class="w-full rounded border px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="cycle-length" class="block text-gray-700">How long did it last? (in days):</label>
+                <input type="number" id="cycle-length" name="cycle-length" class="w-full rounded border px-3 py-2">
+            </div>
+            <div class="mb-4">
+                <label for="usual-cycle-length" class="block text-gray-700">Usual Cycle Length (in days):</label>
+                <input type="number" id="usual-cycle-length" name="usual-cycle-length" class="w-full rounded border px-3 py-2">
+            </div>
+            <button type="submit" class="bg-blue-500 text-white rounded px-4 py-2 hover:bg-blue-600">Track Cycle</button>
+        </form>
+    </div>
+
+    <div id="cycle-details" class="mt-8 hidden">
+        <h2 class="text-xl font-semibold mb-2">Cycle Details</h2>
+        <p><strong>Menstrual Phase:</strong> <span id="menstrual-phase"></span></p>
+        <p><strong>Details:</strong></p>
+        <ul id="phase-details" class="list-disc ml-6"></ul>
+        <p><strong>Do's and Don'ts:</strong></p>
+        <ul id="do-and-donts" class="list-disc ml-6"></ul>
+    </div>
+
+    <div class="mt-8 flex space-x-4 hidden" id="cycle-stages">
+        <div class="bg-green-100 p-4 rounded-lg flex-1">
+            <h3 class="text-lg font-semibold mb-2">Previous Stage</h3>
+            <p><strong>Phase:</strong> <span id="previous-stage"></span></p>
+            <p><strong>Start Date:</strong> <span id="previous-start-date"></span></p>
+        </div>
+        <div class="bg-yellow-100 p-4 rounded-lg flex-1">
+            <h3 class="text-lg font-semibold mb-2">Upcoming Stage</h3>
+            <p><strong>Phase:</strong> <span id="upcoming-stage"></span></p>
+            <p><strong>Start Date:</strong> <span id="upcoming-start-date"></span></p>
+            <p class="text-red-600" id="late-message">Your period is <span id="days-late">0</span> days late.</p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('cycle-tracker-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const startDate = new Date(document.getElementById('start-date').value);
+            const cycleLength = parseInt(document.getElementById('cycle-length').value);
+            const usualCycleLength = parseInt(document.getElementById('usual-cycle-length').value);
+            
+            const currentDate = new Date();
+            const daysPassed = Math.ceil((currentDate - startDate) / (1000 * 60 * 60 * 24));
+            const dayInCycle = daysPassed % cycleLength;
+            const upcomingStartDate = new Date(startDate);
+            upcomingStartDate.setDate(startDate.getDate() + usualCycleLength);
+            
+            let menstrualPhase, phaseDetails, doAndDonts, previousStage, upcomingStage, daysLate;
+            
+            if (dayInCycle < 5) {
+                menstrualPhase = "Menstruation";
+                phaseDetails = [
+                    "You are in your menstrual phase.",
+                    "Expect bleeding and discomfort.",
+                ];
+                doAndDonts = [
+                    "Do: Rest, hydrate, and use pain relief if needed.",
+                    "Don't: Overexert yourself or skip self-care.",
+                ];
+                previousStage = "Luteal Phase";
+                upcomingStage = "Follicular Phase";
+            } else if (dayInCycle < 15) {
+                menstrualPhase = "Follicular Phase";
+                phaseDetails = [
+                    "You are in your follicular phase.",
+                    "Hormone levels are rising.",
+                ];
+                doAndDonts = [
+                    "Do: Exercise, eat a balanced diet.",
+                    "Don't: Stress and unhealthy habits.",
+                ];
+                previousStage = "Menstruation";
+                upcomingStage = "Ovulation Phase";
+            } else if (dayInCycle < 23) {
+                menstrualPhase = "Ovulation Phase";
+                phaseDetails = [
+                    "You are in your ovulation phase.",
+                    "Your fertile window is open.",
+                ];
+                doAndDonts = [
+                    "Do: Have safe sex if desired.",
+                    "Don't: Skip protection if not ready for pregnancy.",
+                ];
+                previousStage = "Follicular Phase";
+                upcomingStage = "Luteal Phase";
+            } else {
+                menstrualPhase = "Luteal Phase";
+                phaseDetails = [
+                    "You are in your luteal phase.",
+                    "Hormone levels remain high.",
+                ];
+                doAndDonts = [
+                    "Do: Manage PMS symptoms, relax.",
+                    "Don't: Overindulge in caffeine or stress.",
+                ];
+                previousStage = "Ovulation Phase";
+                upcomingStage = "Menstruation";
+            }
+            
+            const phaseDetailsList = document.getElementById('phase-details');
+            phaseDetailsList.innerHTML = ""; // Clear previous details
+            
+            for (const detail of phaseDetails) {
+                const li = document.createElement('li');
+                li.innerHTML = detail;
+                phaseDetailsList.appendChild(li);
+            }
+            
+            document.getElementById('menstrual-phase').textContent = menstrualPhase;
+            
+            const doAndDontsList = document.getElementById('do-and-donts');
+            doAndDontsList.innerHTML = ""; // Clear previous do's and don'ts
+            
+            for (const item of doAndDonts) {
+                const li = document.createElement('li');
+                li.innerHTML = item;
+                doAndDontsList.appendChild(li);
+            }
+
+            document.getElementById('previous-stage').textContent = previousStage;
+            document.getElementById('upcoming-stage').textContent = upcomingStage;
+            document.getElementById('upcoming-start-date').textContent = upcomingStartDate.toDateString();
+            const previousStartDate = new Date(startDate);
+            previousStartDate.setDate(startDate.getDate() - usualCycleLength);
+            document.getElementById('previous-start-date').textContent = previousStartDate.toDateString();
+            
+            
+            // Calculate days late and display the message
+            if (currentDate > upcomingStartDate) {
+                daysLate = Math.ceil((currentDate - upcomingStartDate) / (1000 * 60 * 60 * 24));
+                document.getElementById('days-late').textContent = daysLate;
+                document.getElementById('late-message').classList.remove('hidden');
+            } else {
+                document.getElementById('late-message').classList.add('hidden');
+            }
+            
+            document.getElementById('cycle-details').classList.remove('hidden');
+            document.getElementById('cycle-stages').classList.remove('hidden');
+        });
+    </script>
+</body>
+</html>
